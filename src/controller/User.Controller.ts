@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { User } from "../model/User";
 import { hash, veri } from "../helpers/hash-password.helpers";
 import { sharedPassword } from "../helpers/shared-user.helpers";
+import { generarId } from "../helpers/generarId";
 
 export const create = async (req: Request, res: Response) => {
   const { nombre, email, password } = req.body;
@@ -17,7 +18,7 @@ export const create = async (req: Request, res: Response) => {
   try {
     const hashPassword = hash(password);
 
-    const user = await User.create({ nombre, email, password: hashPassword });
+    const user = await User.create({ nombre, email, password: hashPassword, token:generarId() });
 
     return res.send({
       msg: "Successful created",
