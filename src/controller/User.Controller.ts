@@ -27,6 +27,18 @@ export const create = async (req: Request, res: Response) => {
       token: generarId(),
     });
 
+    await transporter.sendMail({
+      from: "mensaje enviado por <aaronjau21@gmail.com>",
+      to: email,
+      html: `      
+
+      <a href='http://localhost:4000/api/v1/auth/confirm/${user.token}'>
+        Confirmar cuenta
+      </a>
+
+      `,
+    });
+
     return res.send({
       msg: "Successful created",
       user,
@@ -84,18 +96,7 @@ export const confirmCount = async (req: Request, res: Response) => {
     userToken.confirmado = true;
     userToken.token = "";
     await userToken.save();
-    await transporter.sendMail({
-      from: "mensaje enviado por <aaronjau21@gmail.com>",
-      to: userToken.email,
-      html: `
-      
 
-      <a href='http://localhost:4000/api/v1/auth/confirm/${token}'>
-        Confirmar cuenta
-      </a>
-
-      `,
-    });
     return res.send({
       msg: "Confirmed User",
     });
@@ -105,7 +106,7 @@ export const confirmCount = async (req: Request, res: Response) => {
 };
 
 export const resedPasswordToken = async (req: Request, res: Response) => {
-  const { email } = req.params;
+  const { email } = req.body;
 
   const user = await sharedEmail(email);
 
@@ -119,6 +120,16 @@ export const resedPasswordToken = async (req: Request, res: Response) => {
     user.confirmado = false;
     user.token = generarId();
     await user.save();
+    await transporter.sendMail({
+      from: "mensaje enviado por <aaronjau21@gmail.com>",
+      to: email,
+      html: `      
+
+     Copiar Token
+     ${user.token}
+
+      `,
+    });
     return res.send({
       msg: "Confirm your UserName in your email please",
       token: user.token,
