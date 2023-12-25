@@ -176,3 +176,7 @@ export const resedPassword = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const perfil = () => {
+  console.log('hola')
+};
