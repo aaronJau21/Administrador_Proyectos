@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { User } from "../model/User";
 
-interface ResUser extends Request {
+export interface ResUser extends Request {
   user?: any;
 }
 
