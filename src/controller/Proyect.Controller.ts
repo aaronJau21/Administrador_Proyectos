@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ResUser } from "../middleware/checkAuth";
 import { Proyect } from "../model/Proyect";
 import { sharedIdProject } from "../helpers/shared-project.helpers";
+import { Task } from "../model/Task";
 
 export const getProyects = async (req: ResUser, res: Response) => {
   const proyects = await Proyect.find().where("creador").equals(req.user);
@@ -39,7 +40,13 @@ export const getProyect = async (req: ResUser, res: Response) => {
       msg: "Invalid actions",
     });
   }
-  return res.send(proyect);
+
+  const tasks = await Task.find().where("proyecto").equals(proyect._id);
+
+  return res.send({
+    proyect,
+    tasks,
+  });
 };
 
 export const editProyect = async (req: ResUser, res: Response) => {
@@ -108,4 +115,3 @@ export const addColaborator = async (_req: Request, _res: Response) => {};
 
 export const deleteColaborator = async (_req: Request, _res: Response) => {};
 
-export const getTasks = async (_req: Request, _res: Response) => {};

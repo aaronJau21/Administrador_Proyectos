@@ -6,6 +6,7 @@ import express from "express";
 import db from "./config/db";
 import UserRouter from "./router/User.router";
 import ProyectRouter from "./router/Proyect.router";
+import TaskRouter from "./router/Task.router";
 
 db();
 const port = process.env.PORT;
@@ -17,5 +18,6 @@ app.use(express.json());
 
 app.use("/api/v1/auth", UserRouter);
 app.use("/api/v1/proyects", ProyectRouter);
+app.use("/api/v1/task", TaskRouter);
 
 app.listen(port, () => console.log(`Running server on: ${port}`));
