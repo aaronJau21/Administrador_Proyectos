@@ -14,7 +14,7 @@ const router = Router();
 router.post("/create", create);
 router.post("/login", login);
 router.get("/confirm/:token", confirmCount);
-router.get("/reset-password-token", resedPasswordToken);
+router.post("/reset-password-token", resedPasswordToken);
 router.post("/reset_password", resedPassword);
 
 router.get("/perfil", [checkAuth], perfil);

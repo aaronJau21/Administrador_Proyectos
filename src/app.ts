@@ -12,7 +12,19 @@ db();
 const port = process.env.PORT;
 const app = express();
 
-app.use(cors());
+const whitelist = [process.env.FRONTEND_URL];
+
+const corsOptions = {
+  origin: function (origin: any, callback: any) {
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Error de cors"));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
 

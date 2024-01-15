@@ -32,7 +32,7 @@ export const create = async (req: Request, res: Response) => {
       to: email,
       html: `      
 
-      <a href='http://localhost:4000/api/v1/auth/confirm/${user.token}'>
+      <a href='http://localhost:5173/confirmar/${user.token}'>
         Confirmar cuenta
       </a>
 
@@ -40,7 +40,7 @@ export const create = async (req: Request, res: Response) => {
     });
 
     return res.send({
-      msg: "Successful created",
+      msg: "Successful created,check your email to conconfirm your count",
       user,
     });
   } catch (error: any) {
@@ -123,11 +123,13 @@ export const resedPasswordToken = async (req: Request, res: Response) => {
     await transporter.sendMail({
       from: "mensaje enviado por <aaronjau21@gmail.com>",
       to: email,
-      html: `      
+      html: `  
+      Copiar Token
+      <p>${user.token}</p>
 
-     Copiar Token
-     ${user.token}
-
+      Ingrese al link 
+      <a href="${process.env.FRONTEND_URL}/nuevo-password">Reestablecer Password</a>
+     
       `,
     });
     return res.send({
@@ -143,7 +145,8 @@ export const resedPasswordToken = async (req: Request, res: Response) => {
 };
 
 export const resedPassword = async (req: Request, res: Response) => {
-  const { token, password } = req.body;
+
+  const { password,token } = req.body;
 
   const UserToken = await sharedToken(token);
 
@@ -170,6 +173,8 @@ export const resedPassword = async (req: Request, res: Response) => {
       msg: "Password updated correctly",
     });
   } catch (error: any) {
+    console.log(error);
+
     return res.status(500).send({
       msg: "Error Server",
       error: error.message,
@@ -178,5 +183,5 @@ export const resedPassword = async (req: Request, res: Response) => {
 };
 
 export const perfil = () => {
-  console.log('hola')
+  console.log("hola");
 };
